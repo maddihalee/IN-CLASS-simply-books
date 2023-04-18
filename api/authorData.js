@@ -1,19 +1,24 @@
-import axios from 'axios';
 import { clientCredentials } from '../utils/client';
 
 const dbUrl = clientCredentials.databaseURL;
 
 // FIXME:  GET ALL AUTHORS
 const getAuthors = (uid) => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/authors.json?orderBy="uid"&equalTo="${uid}"`)
-    .then((response) => {
-      if (response.data) {
-        resolve(Object.values(response.data));
+  fetch(`${dbUrl}/authors.json?orderBy="uid"&equalTo="${uid}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data) {
+        resolve(Object.values(data));
       } else {
         resolve([]);
       }
     })
-    .catch((error) => reject(error));
+    .catch(reject);
 });
 
 // FIXME: CREATE AUTHOR
@@ -31,8 +36,14 @@ const createAuthor = (payload) => new Promise((resolve, reject) => {
 });
 
 const getSingleAuthor = (firebaseKey) => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/authors/${firebaseKey}.json`)
-    .then((response) => resolve(response.data))
+  fetch(`${dbUrl}/authors/${firebaseKey}.json`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }, // you technically do not need the options object for GET requests, but using it here for consistency
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data)) // will resolve a single object
     .catch(reject);
 });
 

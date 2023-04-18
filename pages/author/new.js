@@ -1,3 +1,7 @@
+import AuthorForm from "../../components/forms/AuthorForm";
+
 export default function AddAuthor() {
-  return <div>New Author Here</div>;
+  return (
+    <AuthorForm />
+  );
 }
