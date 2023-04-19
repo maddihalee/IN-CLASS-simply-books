@@ -2,8 +2,15 @@ import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import { Button } from 'react-bootstrap';
+import { deleteSingleAuthor } from '../api/authorData';
 
-export default function AuthorCard({ author }) {
+export default function AuthorCard({ author, onUpdate }) {
+  const deleteThisAuthor = () => {
+    if (window.confirm(`Delete ${author.first_name}${author.last_name}?`)) {
+      deleteSingleAuthor(author.firebaseKey).then(() => onUpdate());
+    }
+  };
+
   return (
     <>
       <Card style={{ width: '18rem' }}>
@@ -17,6 +24,9 @@ export default function AuthorCard({ author }) {
           <Link href={`/author/edit/${author.firebaseKey}`} passHref>
             <Button variant="info">EDIT</Button>
           </Link>
+          <Button variant="danger" onClick={deleteThisAuthor} className="m-2">
+            DELETE
+          </Button>
         </Card.Body>
       </Card>
     </>
@@ -30,6 +40,7 @@ AuthorCard.propTypes = {
     email: PropTypes.string,
     firebaseKey: PropTypes.string.isRequired,
   }),
+  onUpdate: PropTypes.func.isRequired,
 };
 
 AuthorCard.defaultProps = {

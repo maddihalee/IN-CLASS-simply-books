@@ -1,4 +1,4 @@
-import AuthorForm from "../../components/forms/AuthorForm";
+import AuthorForm from '../../components/forms/AuthorForm';
 
 export default function AddAuthor() {
   return (

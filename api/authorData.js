@@ -31,7 +31,16 @@ const createAuthor = (payload) => new Promise((resolve, reject) => {
     body: JSON.stringify(payload),
   })
     .then((response) => response.json())
-    .then((data) => resolve(data))
+    .then((data) => {
+      const setCode = { firebaseKey: data.name };
+      fetch(`${dbUrl}/authors/${setCode.firebaseKey}.json`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(setCode),
+      }).then(resolve);
+    })
     .catch(reject);
 });
 
