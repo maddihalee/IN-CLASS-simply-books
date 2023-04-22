@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../utils/context/authContext';
-import { createAuthor, getAuthors, updateAuthor } from '../../api/authorData';
+import { createAuthor, updateAuthor } from '../../api/authorData';
 
 const initialState = {
   first_name: '',
@@ -15,12 +15,10 @@ const initialState = {
 
 function AuthorForm({ obj }) {
   const [formInput, setFormInput] = useState([initialState]);
-  const [authors, setAuthors] = useState([]);
   const { user } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    getAuthors(user.uid).then(setAuthors);
     if (obj.firebaseKey) {
       setFormInput(obj);
     }
@@ -54,7 +52,7 @@ function AuthorForm({ obj }) {
       <FloatingLabel controlId="floatingInput1" label="First Name" className="mb-3">
         <Form.Control
           type="text"
-          placeholder="Author First Name"
+          placeholder="First Name"
           name="first_name"
           value={formInput.first_name}
           onChange={handleChange}
